@@ -10,8 +10,26 @@ public class LayoutGroupHelper : UdonSharpBehaviour
     [SerializeField] private Scrollbar _verticalGroupScrollbar;
     [SerializeField] private LayoutElement _EmptyContentLayout;
     [SerializeField] private float _heightOffset = -10f;
+
     
-    
+    private bool _isNeedToResetScrollBar;
+    private const float _waitSeconds = 0.1f;
+    private float _startWaitTime;
+
+
+    private void Update()
+    {
+        if (_isNeedToResetScrollBar)
+        {
+            if (Time.realtimeSinceStartup - _startWaitTime < _waitSeconds) return;
+            
+            //Debug.Log("Waited");
+            _isNeedToResetScrollBar = false;
+            _verticalGroupScrollbar.value = 0f;
+        }
+    }
+
+
     public void SetUpVerticalLayoutGroup()
     {
         gameObject.SetActive(true);
@@ -46,5 +64,14 @@ public class LayoutGroupHelper : UdonSharpBehaviour
         {
             _EmptyContentLayout.gameObject.SetActive(false);
         }
+
+        ResetScrollbar();
+    }
+
+    public void ResetScrollbar()
+    {
+        _verticalGroupScrollbar.value = 0f;
+        _startWaitTime = Time.realtimeSinceStartup;
+        _isNeedToResetScrollBar = true;
     }
 }

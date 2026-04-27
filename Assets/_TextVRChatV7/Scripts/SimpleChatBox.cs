@@ -10,17 +10,14 @@ using VRC.SDKBase;
 [UdonBehaviourSyncMode(BehaviourSyncMode.Continuous)]
 public class SimpleChatBox : UdonSharpBehaviour
 {
-    
     [Header("VR platform chat References")]
     public InputField _vrInputField;
-    public Scrollbar _vrScrollbar;
     public RectTransform _vrMessageList;
     public GameObject _vrTextObject;
     public LayoutGroupHelper _vrGroupHelper;
     
     [Header("Other platforms chat References")]
     public InputField _otherInputField;
-    public Scrollbar _otherScrollbar;
     public RectTransform _otherMessageList;
     public GameObject _otherTextObject;
     public LayoutGroupHelper _otherGroupHelper;
@@ -31,15 +28,12 @@ public class SimpleChatBox : UdonSharpBehaviour
     
     
     private InputField _inputField;
-    private Scrollbar _scrollbar;
     private RectTransform _messageList;
     private GameObject _textObject;
     private LayoutGroupHelper _groupHelper;
     
     
     private bool _isInputActiveByEnter;
-    private bool _isNeedToResetScrollBar;
-    private bool _isNeedToWaitFrame;
     private bool _isInputActive;
 
     
@@ -56,14 +50,13 @@ public class SimpleChatBox : UdonSharpBehaviour
     {
         return _isInputActive;
     }
-
+    
 
     private void Start()
     {
         if (Networking.LocalPlayer.IsUserInVR() || _isTestVr)
         {
             _inputField = _vrInputField;
-            _scrollbar = _vrScrollbar;
             _messageList = _vrMessageList;
             _textObject = _vrTextObject;
             _groupHelper = _vrGroupHelper;
@@ -71,16 +64,12 @@ public class SimpleChatBox : UdonSharpBehaviour
         else
         {
             _inputField = _otherInputField;
-            _scrollbar = _otherScrollbar;
             _messageList = _otherMessageList;
             _textObject = _otherTextObject;
             _groupHelper = _otherGroupHelper;
         }
-    }
-    
-    private void OnEnable()
-    {
-        ResetScrollBar();
+        
+        _groupHelper.ResetScrollbar();
     }
 
     private void Update()
@@ -104,23 +93,8 @@ public class SimpleChatBox : UdonSharpBehaviour
                 _inputField.DeactivateInputField(); 
             }
         }
-
-        if (_isNeedToResetScrollBar)
-        {
-            if (_isNeedToWaitFrame)
-            {
-                _isNeedToWaitFrame = false;
-                return;
-            }
-            
-            _isNeedToResetScrollBar = false;
-            _scrollbar.value = 0f;
-        }
     }
 
-    
-    
-    
     
     
     public void OnInputChanged()
@@ -148,7 +122,6 @@ public class SimpleChatBox : UdonSharpBehaviour
         _inputField.DeactivateInputField(); 
     }
     
-    
     public void OnInputFieldPressed()
     {
         //Debug.Log("OnInputFieldPressed");
@@ -157,25 +130,6 @@ public class SimpleChatBox : UdonSharpBehaviour
     }
     
     
-    
-    
-    /*TMP_inputField
-    public TMP_InputField _inputField;
-    public void OnInputFieldPressed()
-    {
-        Debug.Log("OnInputFieldPressed");
-        //_inputField.interactable = true;
-        //_inputField.ActivateInputField();
-        
-    }
-    
-    public void OnValueChanged()
-    {
-        Debug.Log("OnValueChanged");
-        //_inputField.DeactivateInputField();
-        //_inputField.interactable = false;
-        OnEndEdit();
-    }*/
     
     [NetworkCallable]  
     public void OnPlayerSendMessage(string msg)
@@ -215,10 +169,9 @@ public class SimpleChatBox : UdonSharpBehaviour
         textObject.GetComponent<LayoutElement>().minHeight = minHeight;
         textObject.GetComponent<LayoutElement>().minWidth = _messageList.rect.width;
         
-        ResetScrollBar();
+        //ResetScrollBar();
         _groupHelper.SetUpVerticalLayoutGroup();
     }
-
     
     private float CalculateLayoutMinHeight(TMP_Text msgTextField, string simpleMsg)
     {
@@ -290,10 +243,22 @@ public class SimpleChatBox : UdonSharpBehaviour
         return minHeight;
     }
     
-    private void ResetScrollBar()
+    
+    /*TMP_inputField
+    public TMP_InputField _inputField;
+    public void OnInputFieldPressed()
     {
-        _isNeedToResetScrollBar = true;
-        _isNeedToWaitFrame = true;
+        Debug.Log("OnInputFieldPressed");
+        //_inputField.interactable = true;
+        //_inputField.ActivateInputField();
+
     }
 
+    public void OnValueChanged()
+    {
+        Debug.Log("OnValueChanged");
+        //_inputField.DeactivateInputField();
+        //_inputField.interactable = false;
+        OnEndEdit();
+    }*/
 }

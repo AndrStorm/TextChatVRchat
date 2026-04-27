@@ -10,8 +10,6 @@ public class AlwaysVisibleOverlay : UdonSharpBehaviour
     [SerializeField] private float _yOffset = 0f;
     [SerializeField] private float _xOffset = 0f;
     
-    //[SerializeField] private GameObject _overlay;
-
     private bool _isOverlayActive;
     
     void Update()
@@ -32,20 +30,5 @@ public class AlwaysVisibleOverlay : UdonSharpBehaviour
         
         canvasTransform.rotation = Quaternion.LookRotation
             (headRotation * Vector3.forward, Vector3.up);
-
-        /*if (Input.GetKeyDown(KeyCode.T))
-        {
-            SwitchOverlay();
-        }*/
     }
-
-    /*private void SwitchOverlay()
-    {
-        Debug.Log($"isActive {_isOverlayActive}");
-        _overlay.SetActive(_isOverlayActive);
-        _isOverlayActive = !_isOverlayActive;
-    }*/
-
-    
-    
 }
