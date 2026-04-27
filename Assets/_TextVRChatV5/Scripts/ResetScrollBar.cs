@@ -1,6 +1,4 @@
-﻿
-using System;
-using UdonSharp;
+﻿using UdonSharp;
 using UnityEngine.UI;
 
 
@@ -11,6 +9,8 @@ public class ResetScrollBar : UdonSharpBehaviour
 
     private bool _isNeedToResetScrollBar;
     private bool _isNeedToWaitFrame;
+    
+    
     private void OnEnable()
     {
         Reset();
@@ -23,6 +23,7 @@ public class ResetScrollBar : UdonSharpBehaviour
             if (_isNeedToWaitFrame)
             {
                 _isNeedToWaitFrame = false;
+                _scrollbar.value = 0f;
                 return;
             }
             

@@ -1,15 +1,14 @@
-﻿
-using System;
-using UdonSharp;
+﻿using UdonSharp;
 using UnityEngine;
-using VRC.SDKBase;
-using VRC.Udon;
+
 
 public class ToggleChat : UdonSharpBehaviour
 {
+    [Header("References to toggle")]
     [SerializeField] private GameObject _overlay;
     [SerializeField] private GameObject _chatBox;
-
+    
+    [Header("Chat box controller")]
     [SerializeField] private SimpleChatBox _simpleChatBox;
     
     private bool _isOverlayActive;
@@ -24,7 +23,12 @@ public class ToggleChat : UdonSharpBehaviour
         }
     }
     
-    public void SwitchOverlay()
+    public void SwitchOverlayEvent()
+    {
+        SwitchOverlay();
+    }
+    
+    private void SwitchOverlay()
     {
         //Debug.Log($"isActive {_isOverlayActive}");
         _overlay.SetActive(_isOverlayActive);

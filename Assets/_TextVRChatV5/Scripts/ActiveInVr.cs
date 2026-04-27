@@ -1,6 +1,4 @@
-﻿
-
-using UdonSharp;
+﻿using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 
@@ -20,6 +18,5 @@ public class ActiveInVr : UdonSharpBehaviour
         {
             _GameObject.SetActive(!setStateInVR);
         }
-        
     }
 }

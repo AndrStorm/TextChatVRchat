@@ -1,6 +1,4 @@
-﻿
-using System;
-using TMPro;
+﻿using TMPro;
 using UdonSharp;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,33 +6,47 @@ using VRC.SDK3.UdonNetworkCalling;
 using VRC.Udon.Common.Interfaces;  
 using VRC.SDKBase;
 
+
 [UdonBehaviourSyncMode(BehaviourSyncMode.Continuous)]
 public class SimpleChatBox : UdonSharpBehaviour
 {
     
-    public InputField _vrinputField;
-    public Scrollbar _vrscrollbar;
-    public RectTransform _vrmessegeList;
-    public GameObject _vrtextObject;
+    [Header("VR platform chat References")]
+    public InputField _vrInputField;
+    public Scrollbar _vrScrollbar;
+    public RectTransform _vrMessageList;
+    public GameObject _vrTextObject;
+    public LayoutGroupHelper _vrGroupHelper;
     
-    public InputField _otherinputField;
-    public Scrollbar _otherscrollbar;
-    public RectTransform _othermessegeList;
-    public GameObject _othertextObject;
+    [Header("Other platforms chat References")]
+    public InputField _otherInputField;
+    public Scrollbar _otherScrollbar;
+    public RectTransform _otherMessageList;
+    public GameObject _otherTextObject;
+    public LayoutGroupHelper _otherGroupHelper;
+    
+    [Header("Testing options")]
+    public bool _isTestVr;
+    public bool _isEnterToChat;
+    
     
     private InputField _inputField;
     private Scrollbar _scrollbar;
-    private RectTransform _messegeList;
+    private RectTransform _messageList;
     private GameObject _textObject;
-
-    public bool _isTestVr;
-    public bool _isEnterToChat;
+    private LayoutGroupHelper _groupHelper;
+    
     
     private bool _isInputActiveByEnter;
     private bool _isNeedToResetScrollBar;
     private bool _isNeedToWaitFrame;
     private bool _isInputActive;
 
+    
+    private const char SPACE = ' ';
+    
+    
+    
     public bool IsInputActiveByEnter()
     {
         return _isInputActiveByEnter;
@@ -48,30 +60,34 @@ public class SimpleChatBox : UdonSharpBehaviour
 
     private void Start()
     {
-        
         if (Networking.LocalPlayer.IsUserInVR() || _isTestVr)
         {
-            _inputField = _vrinputField;
-            _scrollbar = _vrscrollbar;
-            _messegeList = _vrmessegeList;
-            _textObject = _vrtextObject;
+            _inputField = _vrInputField;
+            _scrollbar = _vrScrollbar;
+            _messageList = _vrMessageList;
+            _textObject = _vrTextObject;
+            _groupHelper = _vrGroupHelper;
         }
         else
         {
-            _inputField = _otherinputField;
-            _scrollbar = _otherscrollbar;
-            _messegeList = _othermessegeList;
-            _textObject = _othertextObject;
+            _inputField = _otherInputField;
+            _scrollbar = _otherScrollbar;
+            _messageList = _otherMessageList;
+            _textObject = _otherTextObject;
+            _groupHelper = _otherGroupHelper;
         }
     }
-
+    
+    private void OnEnable()
+    {
+        ResetScrollBar();
+    }
 
     private void Update()
     {
         if (_isEnterToChat && Input.GetKeyDown(KeyCode.Return))
         {
             _isInputActive = false;
-
             
             if (!_isInputActiveByEnter)
             {
@@ -102,11 +118,11 @@ public class SimpleChatBox : UdonSharpBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        ResetScrollBar();
-    }
-
+    
+    
+    
+    
+    
     public void OnInputChanged()
     {
         //Debug.Log($"OnInputChanged()");
@@ -123,7 +139,7 @@ public class SimpleChatBox : UdonSharpBehaviour
         //_isInputActive = false;
         
         string msg = _inputField.text;
-        SendCustomNetworkEvent(NetworkEventTarget.All, nameof(OnPlayerSendMessege), msg);
+        SendCustomNetworkEvent(NetworkEventTarget.All, nameof(OnPlayerSendMessage), msg);
         
         _inputField.text = string.Empty;
         
@@ -139,6 +155,7 @@ public class SimpleChatBox : UdonSharpBehaviour
         _inputField.interactable = true;
         _inputField.ActivateInputField();
     }
+    
     
     
     
@@ -161,7 +178,7 @@ public class SimpleChatBox : UdonSharpBehaviour
     }*/
     
     [NetworkCallable]  
-    public void OnPlayerSendMessege(string msg)
+    public void OnPlayerSendMessage(string msg)
     {
         string senderPlayerName = NetworkCalling.CallingPlayer.displayName;
         if (senderPlayerName == null)
@@ -187,7 +204,7 @@ public class SimpleChatBox : UdonSharpBehaviour
         { msg = simpleMsg; }
         
         
-        var textObject = Instantiate(_textObject, _messegeList);
+        var textObject = Instantiate(_textObject, _messageList);
         
         
         var msgTextField = textObject.GetComponent<TMP_Text>();
@@ -196,18 +213,18 @@ public class SimpleChatBox : UdonSharpBehaviour
         
         float minHeight = CalculateLayoutMinHeight(msgTextField, simpleMsg);
         textObject.GetComponent<LayoutElement>().minHeight = minHeight;
-        textObject.GetComponent<LayoutElement>().minWidth = _messegeList.rect.width;
+        textObject.GetComponent<LayoutElement>().minWidth = _messageList.rect.width;
         
         ResetScrollBar();
+        _groupHelper.SetUpVerticalLayoutGroup();
     }
 
     
-    private const char SPACE = ' ';
     private float CalculateLayoutMinHeight(TMP_Text msgTextField, string simpleMsg)
     {
         float fontSize = msgTextField.fontSize;
 
-        float lineWidth = _messegeList.rect.width;
+        float lineWidth = _messageList.rect.width;
         float charWidth = fontSize / 2f;
 
         int charsInLine = Mathf.FloorToInt(lineWidth / charWidth);
