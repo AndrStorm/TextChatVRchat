@@ -2523,16 +2523,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5914840639529382791, guid: a1f2e40311f91704d824e717a4723e70,
-        type: 3}
-      propertyPath: m_Size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5914840639529382791, guid: a1f2e40311f91704d824e717a4723e70,
-        type: 3}
-      propertyPath: m_Value
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6257650531528630924, guid: a1f2e40311f91704d824e717a4723e70,
         type: 3}
       propertyPath: serializationData.Prefab
@@ -3091,13 +3081,11 @@ MonoBehaviour:
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 781838199223104920}
   _vrInputField: {fileID: 4857476222176628960}
-  _vrScrollbar: {fileID: 7475234571719823631}
   _vrMessageList: {fileID: 5881301279913433864}
   _vrTextObject: {fileID: 5670337381381778929, guid: d123d48a1d575214eb3a93abc16e80dc,
     type: 3}
   _vrGroupHelper: {fileID: 0}
   _otherInputField: {fileID: 1878416025104155190}
-  _otherScrollbar: {fileID: 4966260782062320241}
   _otherMessageList: {fileID: 6434825012932431405}
   _otherTextObject: {fileID: 5670337381381778929, guid: d123d48a1d575214eb3a93abc16e80dc,
     type: 3}
