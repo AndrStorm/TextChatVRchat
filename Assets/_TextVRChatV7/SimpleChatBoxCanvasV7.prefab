@@ -3280,7 +3280,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 2.439}
-  m_SizeDelta: {x: 160, y: 104}
+  m_SizeDelta: {x: 480, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &778063534656863147
 Canvas:
@@ -3403,8 +3403,8 @@ MonoBehaviour:
   _udonSharpBackingUdonBehaviour: {fileID: 2839997744488229784}
   canvasTransform: {fileID: 8238735224976161827}
   _headOffset: 0.5
-  _yOffset: -17.5
-  _xOffset: -34.5
+  _yOffset: -16.5
+  _xOffset: -55.5
 --- !u!114 &2839997744488229784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3929,7 +3929,7 @@ PrefabInstance:
     - target: {fileID: 545322675981466668, guid: c8ef026150fd4414faa0e193d8499046,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 35.60001
+      value: 35.6
       objectReference: {fileID: 0}
     - target: {fileID: 1391041126533102229, guid: c8ef026150fd4414faa0e193d8499046,
         type: 3}
